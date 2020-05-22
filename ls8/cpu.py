@@ -48,7 +48,7 @@ class CPU:
         elif op == "MUL":
             self.ram[reg_a] *= self.ram[reg_b]
         elif op == "CMP":
-            #set e if a == b
+            #set as equal if a == b
             #lower e (set to 0000) if !=
             # set l reg a < b
             # set g if a > b
@@ -145,7 +145,11 @@ class CPU:
                 self.alu("ALU", operand_a, operand_b)
                 self.pc += 3
             elif inst == JEQ:
-                
+                # If equal flag is set (true), jump to the address stored in the given register.
+                if self.fl == 0b00000001:
+                    self.pc = self.register[operand_a]
+                else:
+                    self.pc += 2
             else:
                 print(f"We have failed {inst}, maybe try another input. Turning off...")
                 on = False
