@@ -22,6 +22,7 @@ class CPU:
         self.ram = [0] * 256
         self.pc = 0
         self.sp = 7
+        self.fl = 0b00000000
         self.instruction = {LDI: self.runLDI, PRN: self.runPRN, MUL: self.runMUL, HLT: self.runHLT}
 
     def load(self):
@@ -47,14 +48,18 @@ class CPU:
         elif op == "MUL":
             self.ram[reg_a] *= self.ram[reg_b]
         elif op == "CMP":
+            #set e if a == b
+            #lower e (set to 0000) if !=
+            # set l reg a < b
+            # set g if a > b
             if self.register[reg_a] == self.register[reg_b]:
-                # raise E flag
+                self.fl = 0b00000001
             if self.register[reg_a] != self.register[reg_b]:
-                # lower E flag
+                self.fl = 0b00000000
             if self.register[reg_a] < self.register[reg_b]:
-                # raise L flag
+                self.fl = 0b00000100
             if self.register[reg_a] > self.register[reg_b]:
-                # raise G flag
+                self.fl = 0b00000010
             return None
         else:
             raise Exception("Unsupported ALU operation")
