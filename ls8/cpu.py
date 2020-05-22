@@ -18,7 +18,7 @@ class CPU:
         self.ram = [0] * 256
         self.pc = 0
         self.sp = 7
-        # self.instruction = {LDI: self.runLDI, PRN: self.runPRN, MUL: self.runMUL, HLT: self.runHLT}
+        self.instruction = {LDI: self.runLDI, PRN: self.runPRN, MUL: self.runMUL, HLT: self.runHLT}
 
     def load(self):
         """Load a program into memory."""
@@ -42,6 +42,15 @@ class CPU:
         # elif op == "SUB": etc
         elif op == "MUL":
             self.ram[reg_a] *= self.ram[reg_b]
+        elif op == "CMP":
+            # if self.register[reg_a] == self.register[reg_b]:
+            #     # raise E flag
+            # if self.register[reg_a] != self.register[reg_b]:
+            #     # lower E flag
+            # if self.register[reg_a] < self.register[reg_b]:
+            #     # raise L flag
+            # if self.register[reg_a] > self.register[reg_b]:
+            #     # raise G flag
             return None
         else:
             raise Exception("Unsupported ALU operation")
@@ -64,25 +73,25 @@ class CPU:
         # for i in range(8):
         #     print(" %02X" % self.register[i], end='')
 
-    # def runLDI(self):
-    #     operand_a = self.ram[self.pc + 1]
-    #     operand_b = self.ram[self.pc + 2]
-    #     self.ram_write(operand_a, operand_b)
-    #     self.pc += 3
+    def runLDI(self):
+        operand_a = self.ram[self.pc + 1]
+        operand_b = self.ram[self.pc + 2]
+        self.ram_write(operand_a, operand_b)
+        self.pc += 3
     
-    # def runHLT(self):
-    #     self.run.on = False
+    def runHLT(self):
+        self.run.on = False
 
-    # def runPRN(self): 
-    #     location = self.ram[self.pc + 1]
-    #     print(self.ram_read(location))
-    #     self.pc += 1
+    def runPRN(self): 
+        location = self.ram[self.pc + 1]
+        print(self.ram_read(location))
+        self.pc += 1
 
-    # def runMUL(self):
-    #     operand_a = self.ram[self.pc + 1]
-    #     operand_b = self.ram[self.pc + 2]
-    #     self.alu("MUL", operand_a, operand_b)
-    #     self.pc += 1
+    def runMUL(self):
+        operand_a = self.ram[self.pc + 1]
+        operand_b = self.ram[self.pc + 2]
+        self.alu("MUL", operand_a, operand_b)
+        self.pc += 1
 
     def ram_read(self, loc):
         return self.ram[loc]
@@ -110,13 +119,21 @@ class CPU:
             elif inst == HLT:
                 on = False
             elif inst == PUSH:
+                # Decrement the stack pointer
                 self.register[self.sp] -= 1
+                # set the value at given pointer to given value
                 self.ram_write(self.register[self.sp], self.register[operand_a])
                 self.pc += 2
 
             elif inst == POP:
+                # we need the address for where to store the value in register
+                # Copy the value from the address pointed to by `sp` to the given register.
+                # last_val = last value in stack
                 last_val = self.ram_read(self.register[self.sp])
+                # self.ram_write(operand_a, last_val)
                 self.register[operand_a] = last_val
+                # put that in the register at operan_a
+                # Increment sp
                 self.register[self.sp] += 1
                 self.pc += 2
             else:
