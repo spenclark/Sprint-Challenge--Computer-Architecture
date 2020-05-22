@@ -144,6 +144,10 @@ class CPU:
                 #call alu and pass in CMP + operands / 3 bit oper
                 self.alu("ALU", operand_a, operand_b)
                 self.pc += 3
+            elif inst == JMP:
+                # Jump to the address stored in the given register.
+                # Set the PC to the address stored in the given register.
+                self.pc = self.register[operand_a]
             elif inst == JEQ:
                 # If equal flag is set (true), jump to the address stored in the given register.
                 if self.fl == 0b00000001:
