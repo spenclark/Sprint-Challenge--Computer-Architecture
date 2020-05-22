@@ -119,21 +119,13 @@ class CPU:
             elif inst == HLT:
                 on = False
             elif inst == PUSH:
-                # Decrement the stack pointer
                 self.register[self.sp] -= 1
-                # set the value at given pointer to given value
                 self.ram_write(self.register[self.sp], self.register[operand_a])
                 self.pc += 2
 
             elif inst == POP:
-                # we need the address for where to store the value in register
-                # Copy the value from the address pointed to by `sp` to the given register.
-                # last_val = last value in stack
                 last_val = self.ram_read(self.register[self.sp])
-                # self.ram_write(operand_a, last_val)
                 self.register[operand_a] = last_val
-                # put that in the register at operan_a
-                # Increment sp
                 self.register[self.sp] += 1
                 self.pc += 2
             else:
