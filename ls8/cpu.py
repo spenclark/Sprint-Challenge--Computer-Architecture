@@ -150,6 +150,12 @@ class CPU:
                     self.pc = self.register[operand_a]
                 else:
                     self.pc += 2
+            elif inst == JNE:
+                # If E flag is clear (false, 0), jump to the address stored in the given register.
+                if self.fl != 0b00000001:
+                    self.pc = self.register[operand_a]
+                else:
+                    self.pc += 2
             else:
                 print(f"We have failed {inst}, maybe try another input. Turning off...")
                 on = False
