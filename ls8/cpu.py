@@ -52,6 +52,9 @@ class CPU:
             #lower e (set to 0000) if !=
             # set l reg a < b
             # set g if a > b
+            # L Less-than: during a CMP, set to 1 if registerA is less than registerB, zero otherwise.
+            # G Greater-than: during a CMP, set to 1 if registerA is greater than registerB, zero otherwise.
+            # E Equal: during a CMP, set to 1 if registerA is equal to registerB, zero otherwise.
             if self.register[reg_a] == self.register[reg_b]:
                 self.fl = 0b00000001
             if self.register[reg_a] != self.register[reg_b]:
@@ -138,9 +141,11 @@ class CPU:
                 self.register[self.sp] += 1
                 self.pc += 2
             elif inst == CMP:
-                #call alu and pass in CMP + operands
+                #call alu and pass in CMP + operands / 3 bit oper
                 self.alu("ALU", operand_a, operand_b)
                 self.pc += 3
+            elif inst == JEQ:
+                
             else:
                 print(f"We have failed {inst}, maybe try another input. Turning off...")
                 on = False
