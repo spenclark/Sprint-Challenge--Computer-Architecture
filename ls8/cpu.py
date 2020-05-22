@@ -137,6 +137,10 @@ class CPU:
                 self.register[operand_a] = last_val
                 self.register[self.sp] += 1
                 self.pc += 2
+            elif inst == CMP:
+                #call alu and pass in CMP + operands
+                self.alu("ALU", operand_a, operand_b)
+                self.pc += 3
             else:
                 print(f"We have failed {inst}, maybe try another input. Turning off...")
                 on = False
