@@ -28,7 +28,7 @@ class CPU:
         with open(sys.argv[1]) as file:
             for i in file:
                 i = i.split("#")[0].strip()
-                if i == " ":
+                if i == "":
                     continue
                 instruction = int(i, 2)
                 self.ram[address] = instruction
