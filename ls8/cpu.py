@@ -8,6 +8,10 @@ PRN = 0b01000111
 MUL = 0b10100010
 POP = 0b01000110
 PUSH = 0b01000101
+CMP = 0b10100111
+JMP = 0b01010100
+JEQ = 0b01010101
+JNE = 0b01010110
 
 class CPU:
     """Main CPU class."""
@@ -43,14 +47,14 @@ class CPU:
         elif op == "MUL":
             self.ram[reg_a] *= self.ram[reg_b]
         elif op == "CMP":
-            # if self.register[reg_a] == self.register[reg_b]:
-            #     # raise E flag
-            # if self.register[reg_a] != self.register[reg_b]:
-            #     # lower E flag
-            # if self.register[reg_a] < self.register[reg_b]:
-            #     # raise L flag
-            # if self.register[reg_a] > self.register[reg_b]:
-            #     # raise G flag
+            if self.register[reg_a] == self.register[reg_b]:
+                # raise E flag
+            if self.register[reg_a] != self.register[reg_b]:
+                # lower E flag
+            if self.register[reg_a] < self.register[reg_b]:
+                # raise L flag
+            if self.register[reg_a] > self.register[reg_b]:
+                # raise G flag
             return None
         else:
             raise Exception("Unsupported ALU operation")
